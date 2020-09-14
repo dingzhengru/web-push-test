@@ -1,6 +1,7 @@
-const GCM_SENDER_ID = '184131655084'; //* firebase 的 web-push-test 專案
-let applicationServerPublicKey = '<Your Public Key>';
+// const GCM_SENDER_ID = '184131655084'; //* firebase 的 web-push-test 專案
+let applicationServerPublicKey = null; //* 公鑰，由後端取得
 let isSubscribed = null;
+let subscriptionData = null;
 
 getKeys(); //* 取得 & 設置公鑰
 
@@ -22,9 +23,23 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
   pushButton.textContent = 'Push Not Supported';
 }
 
-function urlB64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+// function urlB64ToUint8Array(base64String) {
+//   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+//   const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+
+//   const rawData = window.atob(base64);
+//   const outputArray = new Uint8Array(rawData.length);
+
+//   for (let i = 0; i < rawData.length; ++i) {
+//     outputArray[i] = rawData.charCodeAt(i);
+//   }
+//   return outputArray;
+// }
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
@@ -65,7 +80,10 @@ function initialiseUI(swRegistration) {
 
   //* 取得訂閱狀態
   swRegistration.pushManager.getSubscription().then(subscription => {
+    subscriptionData = subscription;
     isSubscribed = !!subscription;
+
+    console.log('[Subscription]', subscription);
 
     if (isSubscribed) {
       console.log('User IS subscribed.');
@@ -80,16 +98,18 @@ function initialiseUI(swRegistration) {
 
 //* 訂閱
 function subscribeUser(swRegistration) {
-  console.log('[SubscribeUser]', swRegistration);
-  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+  console.log('[SubscribeUser]');
+  // const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
   swRegistration.pushManager
     .subscribe({
       userVisibleOnly: true,
-      applicationServerKey: applicationServerKey,
+      applicationServerKey: urlBase64ToUint8Array(applicationServerPublicKey),
     })
     .then(subscription => {
       console.log('[成功訂閱]', subscription);
       isSubscribed = true;
+
+      subscriptionData = subscription;
 
       //* 告訴後端訂閱成功
       // updateSubscriptionOnServer(subscription);
@@ -106,11 +126,14 @@ function subscribeUser(swRegistration) {
 
 //* 取消訂閱
 function unsubscribeUser(swRegistration) {
+  console.log('[UnsubscribeUser]');
   swRegistration.pushManager
     .getSubscription()
     .then(subscription => {
       if (subscription) {
         subscription.unsubscribe();
+
+        subscriptionData = subscription;
 
         //* 告訴後端訂閱已取消
         // updateSubscriptionOnServer(null);

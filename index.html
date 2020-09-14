@@ -18,14 +18,16 @@
     <p id="private-key"></p>
 
     <h3>訂閱</h3>
-    <p>檢查訂閱狀態 => 點下訂閱按鈕 => 訂閱 || 取消訂閱</p>
+    <p>檢查訂閱狀態 => 點下訂閱按鈕 => 訂閱 || 取消訂閱 => 後端紀錄訂閱資料(推送需要用到)</p>
 
     <button id="subscription" disabled>訂閱</button>
 
     <h3>推送</h3>
-    <p></p>
+    <p>取得訂閱資訊(資料庫) => 推送訊息給指定訂閱者</p>
+    <p>於 sw.js 設置接收推送事件</p>
 
-    <button>推送訊息</button>
+    <button onclick="pushMessage()">推送訊息</button>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="api.js"></script>
     <script src="main.js"></script>
