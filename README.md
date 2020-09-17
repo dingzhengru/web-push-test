@@ -1,6 +1,7 @@
 # web-push-test <!-- omit in toc -->
 
 - [推播流程](#推播流程)
+  - [條件](#條件)
   - [訂閱](#訂閱)
   - [推播](#推播)
 - [Library](#library)
@@ -16,6 +17,11 @@ npm start- [web-push](#web-push)
 ```
 
 ## 推播流程
+
+### 條件
+
+- 需註冊 Service Worker
+- 瀏覽器必須支援此功能
 
 ### 訂閱
 
