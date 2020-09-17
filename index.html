@@ -16,6 +16,7 @@
     <h2>VAPID 密鑰</h2>
     <p style="font-weight: bold">通常只會產生一次，就固定使用，因為一旦改掉，已訂閱的資訊就會沒用了</p>
     <p>先執行 npm run gen-keys 來創建 VAPID 公私鑰 => 執行後端 server (npm start)</p>
+    <p>或是直接 `npm install -g web-push` 再 `web-push generate-vapid-keys`，再創檔案放入即可(publicKey, privateKey)</p>
 
     <span>Public Key</span>
     <p id="public-key"></p>
