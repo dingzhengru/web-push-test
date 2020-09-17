@@ -2,6 +2,7 @@
 
 - [推播流程](#推播流程)
   - [條件](#條件)
+  - [VAPID Keys](#vapid-keys)
   - [訂閱](#訂閱)
   - [推播](#推播)
 - [注意事項](#注意事項)
@@ -26,10 +27,16 @@ npm start(#web-push)
 - 需註冊 Service Worker
 - 瀏覽器必須支援此功能
 
+### VAPID Keys
+
+- 訂閱需要一組 vapid keys ，此專案是用 web-push-libs 套件來產出，只需產出一次即可，要是換了，等同於捨棄至今所有訂閱
+- 此密鑰組包含一組公鑰、私鑰，將此公私鑰存起來，公鑰要給前端使用
+
+創建方法用此套件的話，可以於後端 `webpush.generateVAPIDKeys()` 來產生
+或是直接 `npm install -g web-push` 再 `web-push generate-vapid-keys` 即可
+
 ### 訂閱
 
-- 先產出一組 VAPID keys，此專案是用 web-push-libs 套件來產出，只需產出一次即可，要是換了，等同於捨棄至今所有訂閱
-- 此密鑰組包含一組公鑰、私鑰，將此公私鑰存起來，公鑰要給前端使用
 - 檢查訂閱狀態 => 點下訂閱按鈕 => 訂閱 || 取消訂閱 => 傳給後端紀錄 || 刪除訂閱資料(包含 endpoint、p256dh、auth，推播需要用到)
 
 ### 推播

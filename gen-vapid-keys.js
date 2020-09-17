@@ -1,6 +1,10 @@
 import fs from 'fs';
 import webpush from 'web-push';
 
+//* 也可以直接利用，以下指令來產生，在手動創檔案存取即可
+// npm install -g web-push
+// web-push generate-vapid-keys
+
 //* VAPID keys should only be generated only once.
 const vapidKeys = webpush.generateVAPIDKeys();
 
