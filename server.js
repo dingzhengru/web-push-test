@@ -49,21 +49,27 @@ app.post('/unsubscribe', (req, res) => {
   db.get('subscribe').remove(subscriptionData).write();
 });
 
-app.post('/push-message', (req, res) => {
-  const subscriptionData = req.body.data;
+app.post('/push/all', (req, res) => {
+  //* 可以改由直接從資料庫拿訂閱資料了
+  //* 可以建置兩種 API，一種是推播全部，一種根據條件推播指定訂閱資料
+  //* 此 API 是從資料庫拿所有訂閱資料，傳送推播給所有訂閱者
+  const message = req.body.message;
+  console.log('[PushAll]', 'message:', message);
 
-  console.log('[push-message]');
+  const subscribeList = db.get('subscribe').value();
 
-  //* This is the same output of calling JSON.stringify on a PushSubscription
-  const pushSubscription = {
-    endpoint: subscriptionData.endpoint,
-    keys: {
-      p256dh: subscriptionData.keys.p256dh,
-      auth: subscriptionData.keys.auth,
-    },
-  };
+  let pushSubscription;
+  subscribeList.forEach(subscribe => {
+    pushSubscription = {
+      endpoint: subscribe.endpoint,
+      keys: {
+        p256dh: subscribe.keys.p256dh,
+        auth: subscribe.keys.auth,
+      },
+    };
 
-  webpush.sendNotification(pushSubscription, 'Your Push Payload Text');
+    webpush.sendNotification(pushSubscription, message);
+  });
 
   res.json(true);
 });

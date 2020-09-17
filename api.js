@@ -27,11 +27,17 @@ async function unsubscribe(data) {
   return result.data;
 }
 
-async function pushMessage() {
-  console.log('[Push]', subscriptionData);
-  const result = await axios.post(API_URL + '/push-message', { data: subscriptionData });
+async function pushMessageToAll(event) {
+  event.preventDefault();
 
-  console.log('[Push]', result.data);
+  const message = document.querySelector('#push-message-text').value;
 
-  return result.data;
+  const result = await axios.post(API_URL + '/push/all', { message: message });
+
+  // console.log('[Push]', subscriptionData);
+  // const result = await axios.post(API_URL + '/push-message', { data: subscriptionData });
+
+  // console.log('[Push]', result.data);
+
+  // return result.data;
 }
