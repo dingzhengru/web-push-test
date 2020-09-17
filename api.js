@@ -14,6 +14,19 @@ async function getKeys() {
   return result.data;
 }
 
+async function subscribe(data) {
+  console.log('[Subscribe]', data);
+  const result = await axios.post(API_URL + '/subscribe', data);
+
+  return result.data;
+}
+
+async function unsubscribe(data) {
+  const result = await axios.post(API_URL + '/unsubscribe', data);
+
+  return result.data;
+}
+
 async function pushMessage() {
   console.log('[Push]', subscriptionData);
   const result = await axios.post(API_URL + '/push-message', { data: subscriptionData });

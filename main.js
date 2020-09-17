@@ -36,10 +36,8 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 //   return outputArray;
 // }
 function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
@@ -111,7 +109,8 @@ function subscribeUser(swRegistration) {
 
       subscriptionData = subscription;
 
-      //* 告訴後端訂閱成功
+      //* 告訴後端訂閱成功，並傳送訂閱資訊
+      subscribe(subscription);
       // updateSubscriptionOnServer(subscription);
 
       updateSubscriptionButton();
@@ -135,8 +134,8 @@ function unsubscribeUser(swRegistration) {
 
         subscriptionData = subscription;
 
-        //* 告訴後端訂閱已取消
-        // updateSubscriptionOnServer(null);
+        //* 告訴後端訂閱已取消，並傳送訂閱資訊
+        unsubscribe(subscription);
 
         console.log('User is unsubscribed.');
         isSubscribed = false;

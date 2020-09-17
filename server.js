@@ -2,6 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import fs from 'fs';
 import webpush from 'web-push';
+import low from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync';
+
+const adapter = new FileSync('db.json');
+const db = low(adapter);
+
+// Set some defaults (required if your JSON file is empty)
+db.defaults({ subscribe: [] }).write();
 
 const app = express();
 const port = 3000;
@@ -28,6 +36,17 @@ app.get('/keys', (req, res) => {
   const responseData = { publicKey, privateKey };
 
   res.json(responseData);
+});
+
+app.post('/subscribe', (req, res) => {
+  const subscriptionData = req.body;
+  db.get('subscribe').push(subscriptionData).write();
+});
+
+app.post('/unsubscribe', (req, res) => {
+  const subscriptionData = req.body;
+  console.log('[Unsubscribe]', subscriptionData);
+  db.get('subscribe').remove(subscriptionData).write();
 });
 
 app.post('/push-message', (req, res) => {
