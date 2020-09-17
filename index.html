@@ -13,10 +13,9 @@
     <h2>gcm sender id</h2>
     <p>創建 firebase 專案來取得</p>
 
-    <h2>密鑰</h2>
+    <h2>VAPID 密鑰</h2>
     <p style="font-weight: bold">通常只會產生一次，就固定使用，因為一旦改掉，已訂閱的資訊就會沒用了</p>
-    <p>需先啟動該專案的 server，npm start</p>
-    <p>取得密鑰 => 取得訂閱資訊 => 將訂閱資訊傳給後端儲存</p>
+    <p>先執行 npm run gen-keys 來創建 VAPID 公私鑰 => 執行後端 server (npm start)</p>
 
     <span>Public Key</span>
     <p id="public-key"></p>
