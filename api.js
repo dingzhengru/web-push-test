@@ -33,11 +33,4 @@ async function pushMessageToAll(event) {
   const message = document.querySelector('#push-message-text').value;
 
   const result = await axios.post(API_URL + '/push/all', { message: message });
-
-  // console.log('[Push]', subscriptionData);
-  // const result = await axios.post(API_URL + '/push-message', { data: subscriptionData });
-
-  // console.log('[Push]', result.data);
-
-  // return result.data;
 }
