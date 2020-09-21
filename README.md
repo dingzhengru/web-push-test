@@ -11,6 +11,8 @@
   - [web-push-libs](#web-push-libs)
   - [lowdb](#lowdb)
 
+Demo: https://dingzhengru.github.io/web-push-test
+
 測試 web push
 
 運行前端 index.html，我是直接用 vscode 的 Live Server
