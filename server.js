@@ -5,32 +5,36 @@ import webpush from 'web-push';
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
 
+//* Database
 const adapter = new FileSync('db.json');
 const db = low(adapter);
-
 // Set some defaults (required if your JSON file is empty)
 db.defaults({ subscribe: [] }).write();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.json()); // for parsing application/json
 app.use(cors());
+app.use(express.static('./'));
 
 //* VAPID keys should only be generated only once.
 //* 產生一組後，存起來，就將此方法註解掉，或是執行 gen-vapid-keys 來產生並建立檔案
 // const vapidKeys = webpush.generateVAPIDKeys();
 
+const GCM_SENDER_ID = '184131655084';
 const publicKey = fs.readFileSync('./publicKey', 'utf-8');
 const privateKey = fs.readFileSync('./privateKey', 'utf-8');
+
+const mailto = 'mailto:qws7869vdx@gmail.com';
 
 console.log('[PublicKey]', publicKey);
 console.log('[PrivateKey]', privateKey);
 
 //* 放置 GCM KEY
-webpush.setGCMAPIKey('184131655084');
-webpush.setVapidDetails('mailto:qws7869vdx@gmail.com', publicKey, privateKey);
+webpush.setGCMAPIKey(GCM_SENDER_ID);
+webpush.setVapidDetails(mailto, publicKey, privateKey);
 
 app.get('/keys', (req, res) => {
   const responseData = { publicKey, privateKey };
@@ -68,7 +72,36 @@ app.post('/push/all', (req, res) => {
       },
     };
 
-    webpush.sendNotification(pushSubscription, message);
+    // const options = {
+    //   gcmAPIKey: '< GCM API Key >',
+    // vapidDetails: {
+    //   subject: '< \'mailto\' Address or URL >',
+    //   publicKey: '< URL Safe Base64 Encoded Public Key >',
+    //   privateKey: '< URL Safe Base64 Encoded Private Key >'
+    // },
+    //   timeout: <Number> //* milliseconds that specifies the request's socket timeout
+    //   TTL: <Number>, //* how long a push message is retained by the push service (預設是四星期).
+    //   headers: { //* is an object with all the extra headers you want to add to the request.
+    //     '< header name >': '< header value >'
+    //   },
+    //   contentEncoding: '< Encoding type, e.g.: aesgcm or aes128gcm >',
+    //   proxy: '< proxy server options >',
+    //   agent: '< https.Agent instance >'
+    // }
+
+    const options = {
+      gcmAPIKey: GCM_SENDER_ID,
+      vapidDetails: {
+        subject: mailto,
+        publicKey: publicKey,
+        privateKey: privateKey,
+      },
+      headers: {
+        test: 'test-value',
+      },
+    };
+
+    webpush.sendNotification(pushSubscription, message, options);
   });
 
   res.json(true);
