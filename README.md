@@ -11,7 +11,7 @@
   - [web-push-libs](#web-push-libs)
   - [lowdb](#lowdb)
 
-測試 web push
+測試 web push，demo: https://web-push-te.herokuapp.com
 
 ```bash
 npm start(#web-push)
