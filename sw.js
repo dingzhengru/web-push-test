@@ -11,7 +11,8 @@ self.addEventListener('push', function (event) {
   const options = {
     body: `測試訊息: ${event.data.text()}`,
     icon: 'icon.png',
-    badge: 'images/badge.png',
+    badge: 'badge.png',
+    image: 'image.jpg',
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
