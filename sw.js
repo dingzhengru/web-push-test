@@ -7,6 +7,7 @@ self.addEventListener('push', function (event) {
   //* 在 sw.js 中，使用 self 取代 window
   // const hostname = self.location.hostname;
 
+  //* icon, badge, image 可用 http 網址，不一定要把圖片放在前端目錄中
   const title = 'Push Test';
   const options = {
     body: `測試訊息: ${event.data.text()}`,

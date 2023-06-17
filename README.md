@@ -5,6 +5,7 @@
   - [VAPID Keys](#vapid-keys)
   - [訂閱](#訂閱)
   - [推播](#推播)
+    - [GCM為非必要才對](#gcm為非必要才對)
 - [注意事項](#注意事項)
   - [urlBase64ToUint8Array](#urlbase64touint8array)
 - [Library](#library)
@@ -38,9 +39,11 @@ npm start(#web-push)
 
 ### 推播
 
-- 想使用推播功能，必須要有 Google Cloud Messaging (GCM) Sender ID，最快的取得方法是於 Firebase 創一個新專案
+#### GCM為非必要才對
+
+- ~~想使用推播功能，必須要有 Google Cloud Messaging (GCM) Sender ID，最快的取得方法是於 Firebase 創一個新專案~~
 - 前端，於 Service Worker 檔案中設置推播的事件處理，包含 push(接收推播)、notificationclick(點下推播視窗)
-- 後端，此專案是用 web-push 套件來完成推播，設置 GCM Sender ID => 取得訂閱資訊(資料庫) => 推播訊息給指定訂閱者(訂閱資訊)
+- 後端，此專案是用 web-push 套件來完成推播，設置 GCM Sender ID (非必要) => 取得訂閱資訊(資料庫) => 推播訊息給指定訂閱者(訂閱資訊)
 
 ## 注意事項
 
